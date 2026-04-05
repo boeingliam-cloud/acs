@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+    <nav>
+        <div class="system-info">SYSTEM STATUS: OPERATIONAL | V1.2.0</div>
+        <button id="showLogin" onclick="toggleModal(true)">LOGIN</button>
+    </nav>
+
+    <div class="hero-text">
+        <h1>COMMUNITY PORTAL</h1>
+        <p>Access restricted to authorized personnel only.</p>
+    </div>
+
+    <div id="loginModal" class="modal-overlay" style="display: none;">
+        <div class="login-card">
+            <h2>SIGN IN</h2>
+            <div class="input-group">
+                <input type="text" id="user" placeholder="USERNAME / EMAIL (REQUIRED)">
+                <input type="password" id="pass" placeholder="PASSWORD (REQUIRED)">
+                <input type="text" id="code" placeholder="ENTRY CODE (OPTIONAL)">
+            </div>
+            <button class="login-submit" onclick="handleLogin()">ENTER</button>
+            <button class="close-btn" onclick="toggleModal(false)">CANCEL</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD-UvH3k2We00wAcsfCTVYJhgNvb7akjd0",
+            authDomain: "rp-portal-7cfdb.firebaseapp.com",
+            projectId: "rp-portal-7cfdb",
+            storageBucket: "rp-portal-7cfdb.firebasestorage.app",
+            messagingSenderId: "1029232195682",
+            appId: "1:1029232195682:web:852e8915f3f5293069793b",
+            measurementId: "G-BK2QG0M95C"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.toggleModal = (show) => {
+            document.getElementById('loginModal').style.display = show ? 'flex' : 'none';
+        };
+
+        window.handleLogin = async () => {
+            const email = document.getElementById('user').value;
+            const pass = document.getElementById('pass').value;
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+                localStorage.setItem('userEmail', userCredential.user.email);
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                alert("ACCESS DENIED: Invalid Credentials");
+            }
+        };
+    </script>
+</body>
+</html>
