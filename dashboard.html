@@ -2,74 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="dash-page" onload="initDash()">
+<body onload="checkAuth()">
     
-    <div id="prefScreen" class="overlay">
-        <h2>SET YOUR PREFERENCES</h2>
+    <div id="prefScreen" style="padding: 50px 5%;">
+        <h1 style="text-align:center;">Select Workspace</h1>
         <div class="pref-grid">
-            <button onclick="selectRole('Department')">DEPARTMENT</button>
-            <button onclick="selectRole('Business')">BUSINESSES</button>
-            <button onclick="selectRole('RP')">RP SERVER</button>
-            <button onclick="selectRole('Other')">OTHER</button>
+            <div class="glass role-card" onclick="selectRole('Dept')"><h3>Department</h3></div>
+            <div class="glass role-card" onclick="selectRole('Biz')"><h3>Business</h3></div>
+            <div class="glass role-card" onclick="selectRole('Server')"><h3>RP Server</h3></div>
         </div>
     </div>
 
-    <div id="mainUI" style="display: none;">
-        <header>
-            <span id="displayUser"></span>
-            <button onclick="logout()">LOGOUT</button>
-        </header>
+    <div id="mainUI" style="display:none;">
+        <nav>
+            <div id="userLabel" style="font-size: 0.8rem; color: var(--text-dim);"></div>
+            <button class="btn-outline" onclick="location.href='index.html'">Sign Out</button>
+        </nav>
 
-        <div class="content-container">
-            <section class="chat-box">
-                <h3>COMMUNITY CHAT</h3>
-                <div id="chatMessages" class="messages"></div>
-                <div class="input-area">
-                    <input type="text" id="chatInput" placeholder="Message...">
-                    <button onclick="sendMsg()">SEND</button>
+        <div class="dashboard-container">
+            <div class="glass chat-section">
+                <div style="padding: 15px; border-bottom: 1px solid var(--glass-border); font-weight:bold;">Community Chat</div>
+                <div id="chatMessages" class="message-area"></div>
+                <div style="padding:15px;">
+                    <input type="text" id="msgIn" placeholder="Type a message..." style="margin:0;">
                 </div>
-            </section>
+            </div>
 
-            <section id="resourceArea">
-                <div id="deptTools" class="tool-tab" style="display:none;">
-                    <h3>DEPARTMENT RESOURCES</h3>
-                    <div class="module">CAD Terminal v4</div>
-                    <div class="module">Active Patrol Zones</div>
-                </div>
-
-                <div id="bizTools" class="tool-tab" style="display:none;">
-                    <h3>BUSINESS HUB</h3>
-                    <div class="module">Current Commissions</div>
-                    <div class="module">Business Ledger/Chat</div>
+            <div class="glass" style="padding:30px;">
+                <div id="modTools" style="display:none; margin-bottom:30px; border: 1px solid #ef4444; padding:20px; border-radius:12px;">
+                    <h4 style="color:#ef4444; margin-top:0;">Moderator Actions</h4>
+                    <input type="text" id="target" placeholder="Search User Email..." style="width:250px;">
+                    <button class="btn-primary" style="background:#ef4444;" onclick="alert('Action Sent')">Suspend User</button>
                 </div>
 
-                <div id="rpTools" class="tool-tab" style="display:none;">
-                    <h3>RP SERVER TOOLS</h3>
-                    <div class="module">Server Rules</div>
-                    <div class="module">Player Guide</div>
+                <h2 id="roleTitle">Resources</h2>
+                <p id="roleDesc" style="color:var(--text-dim);">Select a module to begin.</p>
+                
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:20px;">
+                    <div class="glass" style="padding:20px;">Main Resource Tab</div>
+                    <div class="glass" style="padding:20px;">Secondary Assets</div>
                 </div>
-
-                <div id="modPanel" class="mod-tool" style="display:none;">
-                    <h3>SAFETY OFFICER COMMAND</h3>
-                    <input type="text" id="searchUser" placeholder="Search Username...">
-                    <div class="mod-btns">
-                        <button class="btn-warn">WARN</button>
-                        <button class="btn-suspend">SUSPEND</button>
-                        <button class="btn-ban">PERMA-BAN</button>
-                    </div>
-                </div>
-            </section>
+            </div>
         </div>
     </div>
 
     <script>
-        function initDash() {
+        function checkAuth() {
             const email = localStorage.getItem('userEmail');
-            if (!email) window.location.href = 'index.html';
-            document.getElementById('displayUser').innerText = "Logged in: " + email;
+            if(!email) window.location.href = 'index.html';
+            document.getElementById('userLabel').innerText = email;
         }
 
         function selectRole(role) {
@@ -77,32 +60,11 @@
             document.getElementById('prefScreen').style.display = 'none';
             document.getElementById('mainUI').style.display = 'block';
 
-            // Check for Safety Officer Domain
-            if (email.endsWith('@safetyofficers.auchat')) {
-                document.getElementById('modPanel').style.display = 'block';
+            if(email.endsWith('@safetyofficers.auchat')) {
+                document.getElementById('modTools').style.display = 'block';
             }
 
-            // Show role-specific tools
-            if (role === 'Department') document.getElementById('deptTools').style.display = 'block';
-            if (role === 'Business') document.getElementById('bizTools').style.display = 'block';
-            if (role === 'RP') document.getElementById('rpTools').style.display = 'block';
-            if (role === 'Other') alert("Please specify your role to an Admin.");
-        }
-
-        function sendMsg() {
-            const email = localStorage.getItem('userEmail');
-            const user = email.split('@')[0];
-            const msg = document.getElementById('chatInput').value;
-            const prefix = email.endsWith('@safetyofficers.auchat') ? "[MOD] " : "";
-            
-            const chatDiv = document.getElementById('chatMessages');
-            chatDiv.innerHTML += `<p><strong>${prefix}${user}:</strong> ${msg}</p>`;
-            document.getElementById('chatInput').value = "";
-        }
-
-        function logout() {
-            localStorage.clear();
-            window.location.href = 'index.html';
+            document.getElementById('roleTitle').innerText = role + " Workspace";
         }
     </script>
 </body>
