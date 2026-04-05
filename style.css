@@ -1,0 +1,91 @@
+body {
+    background-color: #0d0d0d;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+}
+
+/* NAV STYLES */
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 40px;
+    background: #000;
+    border-bottom: 2px solid #222;
+}
+
+#showLogin {
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 8px 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* MODAL STYLES */
+.modal-overlay {
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.95);
+    display: flex; justify-content: center; align-items: center;
+}
+
+.login-card {
+    background: #1a1a1a;
+    padding: 40px;
+    border: 1px solid #333;
+    width: 350px;
+    text-align: center;
+}
+
+.input-group input {
+    width: 90%;
+    padding: 12px;
+    margin: 10px 0;
+    background: #222;
+    border: 1px solid #444;
+    color: white;
+}
+
+.login-submit {
+    background: #fff; color: #000;
+    border: none; width: 100%; padding: 12px;
+    cursor: pointer; font-weight: bold; margin-top: 10px;
+}
+
+/* DASHBOARD STYLES */
+.pref-grid {
+    display: flex; gap: 20px; justify-content: center; margin-top: 50px;
+}
+
+.pref-grid button {
+    padding: 20px 40px; background: #222; color: white;
+    border: 1px solid #444; cursor: pointer;
+}
+
+.pref-grid button:hover { background: #333; }
+
+.content-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    padding: 40px;
+}
+
+.module, .messages {
+    background: #151515;
+    padding: 20px;
+    border: 1px solid #222;
+    margin-bottom: 10px;
+}
+
+.messages { height: 300px; overflow-y: auto; }
+
+.mod-tool {
+    border: 2px solid #ff4444;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.btn-ban { background: #990000; color: white; border: none; padding: 5px 10px; cursor: pointer; }
